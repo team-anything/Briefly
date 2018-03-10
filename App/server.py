@@ -1,7 +1,6 @@
 # coding: utf-8
 
 dummy = "***"*100
-
 '''
 has globals : primary_key
 '''
@@ -26,7 +25,7 @@ import json
 app = Flask(__name__)
 
 max_sentences = 3
-max_local_summaries = 10
+max_local_summaries = 20
 SUMMARIES = dict()
 
 @app.route('/webhook', methods=['GET'])
@@ -49,7 +48,7 @@ def start_callback(payload, event):
             QuickReply(title="Yeah !", payload="PICK_SYNC"),
             QuickReply(title="Nah ", payload="PICK_DSYNC")
             ]
-    page.send(sender_id, "Would you like to sync this conversation :P ?\n you can subscribe etc. ",quick_replies=quick_replies,metadata="DEVELOPER_DEFINED_METADATA")
+    page.send(sender_id, "Would you like to sync this conversation ?\n you can subscribe etc. ",quick_replies=quick_replies,metadata="DEVELOPER_DEFINED_METADATA")
     print("Let's start!")
 
 @page.callback(['PICK_SYNC', 'PICK_DSYNC'])
@@ -58,7 +57,7 @@ def callback_picked_genre(payload, event):
     if payload == "PICK_SYNC":
         page.send(sender_id,"Please Share your Briefly username \n ( format id: username ) ")      # TODO
     else:
-        page.send(sender_id,"Okay , go ahead . Play Around for some time ")
+        page.send(sender_id,"Go ahead ;) Play Around for some time ")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -91,8 +90,6 @@ def message_handler(event):
     #print(user_profile)
     if bot(message,sender_id):
         print("Bot results")
-    elif message == "Get Menu":
-        page.send(sender_id, Template.Buttons("Here you go , %s .." %(user_profile["first_name"]) , buttons))
     else:
         page.send(sender_id,"Didn't get you ")
 
@@ -166,12 +163,12 @@ def bot(text_message,sender_id):
         elif Query == "id":
             user_name = text_message.split()[-1]
             subscribe.addUser(sender_id,user_name)
-            text = "You've been synced"
+            text = "You've been synced "
             page.send(sender_id,text)
             print("User Added")
         else:
             print("here")
-            text="loading the latest news from "+shorten_name
+            text="loading the latest news from "+shorten_name 
             page.send(sender_id,text)
             # page.send(sender_id,"Entity : %s \nValue : %s \nConfidence : %s "%(entin[0],result[entin[0]][0]['value'],result[entin[0]][0]['confidence']*100))
             results = generate_summaries(shorten_name,max_sentences)
@@ -228,13 +225,11 @@ def generate_summaries(name,sentences):
             hash_index = sum_keys[-1]
 
         results.append(Template.GenericElement(headline,
-                # subtitle = concate_news[:20],       # do something like category here
-                subtitle = "",
-                # item_url = "https://www.oculus.com/en-us/rift/",
+                subtitle = name ,
                 image_url = top_image_url,
                 buttons=[
                         Template.ButtonWeb("Read More", article_url),
-                        Template.ButtonPostBack("Summarize", "DEVELOPED_DEFINED_PAYLOAD"+str(hash_index+1)),    #     maybe a SHARE button ?
+                        Template.ButtonPostBack("Summarize", "DEVELOPED_DEFINED_PAYLOAD" + str(hash_index+1)),    #     maybe a SHARE button ?
                             # Template.ButtonPhoneNumber("Call Phone Number", "+16505551234")
                         ])
                 )

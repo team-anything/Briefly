@@ -1,6 +1,3 @@
-'''
-TODO: indian scrapers and cleaners for feeds and summary
-'''
 import re,math,sys,random
 import newspaper
 import pickle
@@ -36,7 +33,6 @@ def refresh(user):
 
 db=firebase.database()
 
-# TODO efficient summarize for a large feed 
 def summary(url):
     g = Goose()
     article = g.extract(url)
@@ -77,7 +73,7 @@ def load_stopwords(language):
         stopwords.update(set([w.strip() for w in f.readlines()]))
 
 
-def summarize(url='', title='', text='', max_sents=4):
+def summarize(url='', title='', text='', max_sents=5):
     if not text or not title or max_sents <= 0:
         return []
 
