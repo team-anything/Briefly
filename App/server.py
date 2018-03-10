@@ -1,14 +1,28 @@
 # coding: utf-8
-import os
+
+dummy = "***"*100
+
+'''
+has globals : primary_key
+'''
+
+import os,random
 parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.sys.path.insert(0,parentdir)
 
 from flask import Flask, request, send_from_directory, render_template
 
-import example.messenger
-from example.config import CONFIG
-from example.fbpage import page
-
+import pickle
+import messenger
+import subscribe
+from config import CONFIG
+import newspaper
+from newspaper import Config
+from fbpage import page
+from fbmq import Attachment,Template,QuickReply
+import pandas as pd
+import apiai
+import json
 app = Flask(__name__)
 
 
@@ -23,6 +37,25 @@ def validate():
     else:
         return 'Failed validation. Make sure the validation tokens match.'
 
+page.show_starting_button("START_PAYLOAD")       # Getting Started
+
+@page.callback(['START_PAYLOAD'])
+def start_callback(payload, event):
+    sender_id = event.sender_id
+    quick_replies = [
+            QuickReply(title="Yeah !", payload="PICK_SYNC"),
+            QuickReply(title="Nah ", payload="PICK_DSYNC")
+            ]
+    page.send(sender_id, "Would you like to sync this conversation :P ?\n you can subscribe etc. ",quick_replies=quick_replies,metadata="DEVELOPER_DEFINED_METADATA")
+    print("Let's start!")
+
+@page.callback(['PICK_SYNC', 'PICK_DSYNC'])
+def callback_picked_genre(payload, event):
+    sender_id = event.sender_id
+    if payload == "PICK_SYNC":
+        page.send(sender_id,"Please Share your Briefly username \n ( format id: username ) ")      #  TODO
+    else:
+        page.send(sender_id,"Okay , go ahead . Play Around for some time ")
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -49,10 +82,6 @@ def authorize():
     })
 
 
-@app.route('/assets/<path:path>')
-def assets(path):
-    return send_from_directory('assets', path)
-
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=8080, threaded=True,debug=True,use_reloader=False)
