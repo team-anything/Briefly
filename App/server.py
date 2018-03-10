@@ -62,6 +62,9 @@ def webhook():
     payload = request.get_data(as_text=True)
     print(payload)
     page.handle_webhook(payload)
+    page.show_persistent_menu([Template.ButtonPostBack('SOURCES', 'MENU_PAYLOAD/1'),
+                           Template.ButtonPostBack('SUBSCRIBE', 'MENU_PAYLOAD/2')])
+    page.handle_webhook(payload,message = message_handler)
 
     return "ok"
 
@@ -71,7 +74,7 @@ def message_handler(event):
     sender_id = event.sender_id
     message = event.message_text
     user_profile = page.get_user_profile(sender_id)
-    user_name = user_profile["first_name"] 
+    user_name = user_profile["first_name"]
 
     # try Menu
     buttons = [
@@ -80,14 +83,17 @@ def message_handler(event):
         Template.ButtonPhoneNumber("Call Phone Number", "+91")
     ]
 
-
     page.typing_on(sender_id)
     page.typing_off(sender_id)
     if message == "Get Menu":
         page.send(sender_id, Template.Buttons("Here you go , %s .." %(user_name) , buttons))
     else:
         page.send(sender_id,"Didn't get you")
-    
+# test_persistant menu 
+@page.callback(['MENU_PAYLOAD/(.+)'])
+def click_persistent_menu(payload, event):
+    click_menu = payload.split('/')[1]
+    page.send(event.sender_id,"you clicked %s menu" % (click_menu))
 
 @app.route('/authorize', methods=['GET'])
 def authorize():
