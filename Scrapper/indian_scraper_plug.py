@@ -23,12 +23,12 @@ def summary(text,title,lang):
         return title
 
     if title == None :
-        title = url
+        title = "testing"
     load_stopwords()
     for bullets in summarize(text=text,title=title,lang=lang):
         summar.append(bullets)
     if len(summar)==0:
-        summar = url
+        summar = title
     return summar
 
 def load_stopwords():

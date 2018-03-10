@@ -64,7 +64,7 @@ def subscribe_model(url,Mf=True):
     except:
         refresh(user)
         subscribe_model(url)
-    print(Uarticle)
+    print(len(Uarticle))
     file_name = "sources.csv"
     sources = pd.read_csv(file_name)
     names = list(sources["name"])
@@ -107,15 +107,11 @@ def subscribe_model(url,Mf=True):
         else:
             summary = article.summary
         ls.append(a)
-        Uarticle[a]=[url,title,date,image,summary]
+        Uarticle[a]=[article.url,title,date,image,summary]
     articles_per_source[source]=ls
-    '''
-    for article in links.articles[:min(3,len(links.articles))]:
-        a=hashlib.sha224(article.url.encode('utf-8')).hexdigest()
-        ls.append(a)
-        Uarticle[a]=summary(article.url)
     print('khatam')
     articles_per_source[source]=ls
+    '''
     print(len(Uarticle))
     print(Uarticle)
     print("==========================")
