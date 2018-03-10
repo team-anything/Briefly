@@ -65,6 +65,29 @@ def webhook():
 
     return "ok"
 
+@page.handle_message
+def message_handler(event):
+    """:type event: fbmq.Event"""
+    sender_id = event.sender_id
+    message = event.message_text
+    user_profile = page.get_user_profile(sender_id)
+    user_name = user_profile["first_name"] 
+
+    # try Menu
+    buttons = [
+        Template.ButtonWeb("Open Web URL", "https://www.codeforces.com"),
+        Template.ButtonPostBack("Subscribe", "www.nytimes.com"),
+        Template.ButtonPhoneNumber("Call Phone Number", "+91")
+    ]
+
+
+    page.typing_on(sender_id)
+    page.typing_off(sender_id)
+    if message == "Get Menu":
+        page.send(sender_id, Template.Buttons("Here you go , %s .." %(user_name) , buttons))
+    else:
+        page.send(sender_id,"Didn't get you")
+    
 
 @app.route('/authorize', methods=['GET'])
 def authorize():
