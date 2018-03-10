@@ -11,3 +11,4 @@ Pyrebase==3.0.27
 newspaper3k==0.2.6
 Jinja2==2.8
 nltk==3.2.5
+langdetect

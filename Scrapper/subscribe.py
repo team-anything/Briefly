@@ -2,17 +2,21 @@ import re,math,sys
 import newspaper
 import pickle
 import pyrebase
-from goose3 import Goose
 from collections import Counter
 import os, datetime
 import random
 import hashlib
 import time
 import pandas as pd
+from langdetect import detect       # indian language plug. works for hindi  . TODO : rest of indian languages
+import indian_scraper_plug
 max_article_addition = 15
 ideal = 20.0
 n_bullets = 4
 stopwords = set()
+
+
+INDIAN_LANGUAGES = ['hi','guj','ma']
 
 config={
         "apiKey": "AIzaSyCPWujYQAgvfUPh1zqX7jqV51JX0Dj0dnU",
@@ -87,16 +91,23 @@ def subscribe_model(url,Mf=True):
         a=hashlib.sha224(article.url.encode('utf-8')).hexdigest()
         article.download()
         article.parse()
-        title=article.title
-        date=""
+        title = article.title
+        date = ""
         try:
             image=article.top_image
         except:
             image = "http://www.sahalnews.com/wp-content/uploads/2014/12/news-update-.jpg"
         article.nlp()
-        summari=article.summary
+
+        # detect here
+        iso_lang = detect(title)
+        
+        if iso_lang in INDIAN_LANGUAGES:
+            summary = indian_scraper_plug.summary(article.text,article.title,iso_lang)
+        else:
+            summary = article.summary
         ls.append(a)
-        Uarticle[a]=[url,title,date,image,summari]
+        Uarticle[a]=[url,title,date,image,summary]
     articles_per_source[source]=ls
     '''
     for article in links.articles[:min(3,len(links.articles))]:
