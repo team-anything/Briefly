@@ -3,7 +3,6 @@ import re,math,sys,random
 import newspaper
 import pickle
 import pyrebase
-from goose3 import Goose
 from collections import Counter
 import os, datetime
 import pandas as pd
@@ -30,11 +29,14 @@ def summary(text,title,lang):
         summar.append(bullets)
     if len(summar)==0:
         summar = url
-    return summar 
+    return summar
 
 def load_stopwords():
     global stopwords
-    
+    lines = open("./stopwords-hi.txt","r")
+    stopwords = [word[:-1] for word in lines.readlines()]
+
+
 def summarize(title="",text="",lang="",max_sents = 3):
     if not text or not title or max_sents <= 0:
         return []
