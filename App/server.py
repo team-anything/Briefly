@@ -1,6 +1,7 @@
 # coding: utf-8
 
 dummy = "***"*100
+
 '''
 has globals : primary_key
 '''
