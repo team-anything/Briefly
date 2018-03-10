@@ -25,6 +25,9 @@ import apiai
 import json
 app = Flask(__name__)
 
+max_sentences = 3
+max_local_summaries = 10
+SUMMARIES = dict()
 
 @app.route('/webhook', methods=['GET'])
 def validate():
@@ -61,7 +64,6 @@ def callback_picked_genre(payload, event):
 def webhook():
     payload = request.get_data(as_text=True)
     print(payload)
-    page.handle_webhook(payload)
     page.show_persistent_menu([Template.ButtonPostBack('SOURCES', 'MENU_PAYLOAD/1'),
                            Template.ButtonPostBack('SUBSCRIBE', 'MENU_PAYLOAD/2')])
     page.handle_webhook(payload,message = message_handler)
@@ -73,23 +75,28 @@ def message_handler(event):
     """:type event: fbmq.Event"""
     sender_id = event.sender_id
     message = event.message_text
-    user_profile = page.get_user_profile(sender_id)
-    user_name = user_profile["first_name"]
 
     # try Menu
     buttons = [
         Template.ButtonWeb("Open Web URL", "https://www.codeforces.com"),
         Template.ButtonPostBack("Subscribe", "www.nytimes.com"),
-        Template.ButtonPhoneNumber("Call Phone Number", "+91")
+        Template.ButtonPhoneNumber("Call Phone Number", "+919820501130")
     ]
+
+    user_profile = page.get_user_profile(sender_id)
 
     page.typing_on(sender_id)
     page.typing_off(sender_id)
-    if message == "Get Menu":
-        page.send(sender_id, Template.Buttons("Here you go , %s .." %(user_name) , buttons))
+
+    #print(user_profile)
+    if bot(message,sender_id):
+        print("Bot results")
+    elif message == "Get Menu":
+        page.send(sender_id, Template.Buttons("Here you go , %s .." %(user_profile["first_name"]) , buttons))
     else:
-        page.send(sender_id,"Didn't get you")
-# test_persistant menu 
+        page.send(sender_id,"Didn't get you ")
+
+# test_persistant menu
 @page.callback(['MENU_PAYLOAD/(.+)'])
 def click_persistent_menu(payload, event):
     click_menu = payload.split('/')[1]
@@ -110,6 +117,142 @@ def authorize():
         'redirect_uri_success': redirect_uri_success
     })
 
+# only issue , sends blobs
+##@app.before_first_request
+def bot(text_message,sender_id):
+
+    Access_token = "8f88a5431e7d4bc1b07470b6e3eeee7d"
+    client = apiai.ApiAI(Access_token)
+    req = client.text_request()
+    req.lang = "de"
+    req.session_id = "<SESSION ID, UNIQUE FOR EACH USER>"
+    req.query = text_message
+    response = json.loads(req.getresponse().read().decode('utf-8'))
+    responseStatus = response['status']['code']
+
+    if responseStatus==200 :
+        text = response['result']['fulfillment']['speech']
+    else:
+        text="No Match Found"
+
+    if len(response['result']['contexts']):
+        context = response['result']['contexts'][0]['parameters'] #extract parameters
+        Query = context['type'] #get the type of query
+        shorten_name = context['News'] #get the value of news
+        print(context)
+        if Query == "subscribe" :
+            text = "added "+shorten_name+" to your feed"
+            page.send(sender_id,text)
+            subscribe.subChannel(sender_id,shorten_name)
+        elif Query == "unsubscribe":
+            text = "removing "+shorten_name+" from your feed"
+            page.send(sender_id,text)
+            subscribe.unsubChannel(sender_id,shorten_name)
+        elif Query == "summary":
+            text="generating your summary"
+            page.send(sender_id,text)
+            url = text_message.split()[-1]
+            if 'http' not in url:
+                url='https://'+url
+            p,q,r,s=subscribe.summary(url)
+            sumar=""
+            for i in s:
+                sumar+=i
+            text=p+" \n "+sumar
+            page.send(sender_id,text)
+        elif Query == "id":
+            text = "Cool "
+            page.send(sender_id,text)
+            user_name = text_message.split()[-1]
+            subscribe.addUser(sender_id,user_name)
+            print("User Added")
+        else:
+            print("here")
+            text="loading the latest news from "+shorten_name
+            page.send(sender_id,text)
+            # page.send(sender_id,"Entity : %s \nValue : %s \nConfidence : %s "%(entin[0],result[entin[0]][0]['value'],result[entin[0]][0]['confidence']*100))
+            results = generate_summaries(shorten_name,max_sentences)
+            if results == False:
+                return False
+            # gen articles send 1st
+            page.send(sender_id,Template.Generic(results))
+            # page.send(sender_id, Template.Buttons(results[1][:200],results[2]))
+        return True
+    else:
+        page.send(sender_id,text)
+        return True
+        '''
+        ListView Template
+        page.send(sender_id,Template.List(elements = results,top_element_style='large',
+            buttons=[
+                { "title": "View Less", "type": "postback", "payload": "payload"}]))
+        '''
+
+def generate_summaries(name,sentences):
+    # NOTE : we don't need to store summary , instead storing the links would be enough .
+
+    articles = subscribe.subscribe_model(name)      # link , headline , date==None , image_url , sentences(list)
+    if articles == None :
+        return False
+    results = []
+    '''
+    Set a "View More Articles" Option Over here instead of max_articles
+    '''
+    for article in articles:
+        # breakpoint tests
+        '''
+        Issue : Default use of Generic Template <subtitle section> 60chars, <title section> 60 chars ,List view( No - Image ) 640 chars
+
+        '''
+        article_url = article[0]
+        headline = article[1]
+        publish_date = article[2]
+        top_image_url  = article[3]
+        summary_list = []
+        if len(article)==5:
+            summary_list = article[4]
+        concate_news = ""
+
+        for bullets in summary_list:
+            concate_news +=  bullets
+            concate_news += "\n"
+
+        # recheck TODO
+        sum_keys = sorted(SUMMARIES.keys())
+
+        if len(sum_keys) > max_local_summaries :
+            del SUMMARIES[sum_keys[0]]
+
+        if not len(sum_keys):
+            hash_index = 0
+        else:
+            hash_index = sum_keys[-1]
+
+        results.append(Template.GenericElement(headline,
+                # subtitle = concate_news[:20],       # do something like category here
+                subtitle = "",
+                # item_url = "https://www.oculus.com/en-us/rift/",
+                image_url = top_image_url,
+                buttons=[
+                        Template.ButtonWeb("Read More", article_url),
+                        Template.ButtonPostBack("Summarize", "DEVELOPED_DEFINED_PAYLOAD"+str(hash_index+1)),    #     maybe a SHARE button ?
+                            # Template.ButtonPhoneNumber("Call Phone Number", "+16505551234")
+                        ])
+                )
+        SUMMARIES[hash_index+1] = concate_news
+    print("reached Line:227")
+    return results
+
+# Triggered off "PostBack Called"
+@page.callback(['DEVELOPED_DEFINED_PAYLOAD(.+)'],types=['POSTBACK'])
+def callback_clicked_button(payload,event):
+    sender_id = event.sender_id
+    news_id = int(payload[25:])      # bug
+    print(dummy)
+    print(news_id)
+    print(SUMMARIES)
+    # do something with these text   -> To add Headline
+    page.send(sender_id,SUMMARIES[news_id])
 
 
 if __name__ == '__main__':
