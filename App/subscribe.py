@@ -65,7 +65,7 @@ def load_stopwords(language):
     # to pass the tests
     # can be changed with the tests
     if language == 'en':
-        stopwordsFile ="./stopwords-nlp-en.txt"
+        stopwordsFile =".stopwords/stopwords-nlp-en.txt"
     else:
         stopwordsFile = path.join(settings.STOPWORDS_DIR,\
                                   'stopwords-{}.txt'.format(language))
