@@ -110,7 +110,6 @@ def subscribe_model(url,Mf=True):
         Uarticle[a]=[article.url,title,date,image,summary]
     articles_per_source[source]=ls
     print('khatam')
-    articles_per_source[source]=ls
     '''
     print(len(Uarticle))
     print(Uarticle)

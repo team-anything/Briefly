@@ -236,15 +236,23 @@ def sentence_position(i, size):
         return 0
 
 def subChannel(sender_id,value):
+    sender_id=str(sender_id)
+    value=str(value)
     try:
         data={'sub':[value]}
         users=db.child("users").order_by_key().equal_to(sender_id).get(user['idToken'])
         # if value in users.val()[sender_id]['sub']:
         #    return
         if(len(users.each())):#check if entry exists
-            lis=users.val()[sender_id]['sub']
+            data=users.val()[sender_id]
+            print(data)
+            if 'sub' in data.keys():
+                lis=data['sub']
+            else:
+                lis=[]
             lis.append(value)
             data['sub']=lis
+            print(data)
             db.child("users").child(sender_id).update(data,user['idToken'])
         else:
             db.child("users").child(sender_id).set(data,user['idToken'])
@@ -253,14 +261,21 @@ def subChannel(sender_id,value):
         subChannel(sender_id,value)
 
 def unsubChannel(sender_id,value):
+    sender_id=str(sender_id)
+    value=str(value)
     try:
         data={}
         users=db.child("users").order_by_key().equal_to(sender_id).get(user['idToken'])
         if(len(users.each())): #check if entry exists
-       	    lis=users.val()[sender_id]['sub']
+       	    data=users.val()[sender_id]
+            if 'sub' in data.keys():
+                lis=data['sub']
+            else:
+                return
             if value in lis:
                 lis.remove(value)
                 data['sub']=lis
+                print(data)
                 db.child("users").child(sender_id).update(data,user['idToken'])
     except:
         refresh(user)
