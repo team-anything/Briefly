@@ -1,7 +1,6 @@
 # coding: utf-8
 
 dummy = "***"*100
-
 '''
 has globals : primary_key
 '''
@@ -56,7 +55,7 @@ def start_callback(payload, event):
 def callback_picked_genre(payload, event):
     sender_id = event.sender_id
     if payload == "PICK_SYNC":
-        page.send(sender_id,"Please Share your Briefly username \n ( format id: username ) ")      #  TODO
+        page.send(sender_id,"Please Share your Briefly username \n ( format id: username ) ")      # TODO
     else:
         page.send(sender_id,"Okay , go ahead . Play Around for some time ")
 
@@ -64,8 +63,8 @@ def callback_picked_genre(payload, event):
 def webhook():
     payload = request.get_data(as_text=True)
     print(payload)
-    page.show_persistent_menu([Template.ButtonPostBack('SOURCES', 'MENU_PAYLOAD/1'),
-                           Template.ButtonPostBack('SUBSCRIBE', 'MENU_PAYLOAD/2')])
+    page.show_persistent_menu([Template.ButtonPostBack('SUB_LIST1', 'MENU_PAYLOAD/1'),
+                           Template.ButtonPostBack('SUB_LIST2', 'MENU_PAYLOAD/2')])
     page.handle_webhook(payload,message = message_handler)
 
     return "ok"
@@ -80,7 +79,7 @@ def message_handler(event):
     buttons = [
         Template.ButtonWeb("Open Web URL", "https://www.codeforces.com"),
         Template.ButtonPostBack("Subscribe", "www.nytimes.com"),
-        Template.ButtonPhoneNumber("Call Phone Number", "+919820501130")
+        Template.ButtonPhoneNumber("Call Phone Number", "+91")
     ]
 
     user_profile = page.get_user_profile(sender_id)
@@ -96,11 +95,12 @@ def message_handler(event):
     else:
         page.send(sender_id,"Didn't get you ")
 
-# test_persistant menu
+
 @page.callback(['MENU_PAYLOAD/(.+)'])
 def click_persistent_menu(payload, event):
     click_menu = payload.split('/')[1]
     page.send(event.sender_id,"you clicked %s menu" % (click_menu))
+
 
 @app.route('/authorize', methods=['GET'])
 def authorize():
@@ -143,28 +143,30 @@ def bot(text_message,sender_id):
         if Query == "subscribe" :
             text = "added "+shorten_name+" to your feed"
             page.send(sender_id,text)
-            subscribe.subChannel(sender_id,shorten_name)
+            #print(type(sender_id))
+            #print(shorten_name)
+            subscribe.subChannel(str(sender_id),shorten_name)
         elif Query == "unsubscribe":
             text = "removing "+shorten_name+" from your feed"
             page.send(sender_id,text)
-            subscribe.unsubChannel(sender_id,shorten_name)
+            subscribe.unsubChannel(str(sender_id),shorten_name)
         elif Query == "summary":
             text="generating your summary"
             page.send(sender_id,text)
             url = text_message.split()[-1]
             if 'http' not in url:
                 url='https://'+url
-            p,q,r,s=subscribe.summary(url)
-            sumar=""
-            for i in s:
-                sumar+=i
-            text=p+" \n "+sumar
+            title,publish_date,image,headline = subscribe.summary(url)
+            sumar = ""
+            for h in headline:
+                sumar += h
+            text = title+" \n "+sumar
             page.send(sender_id,text)
         elif Query == "id":
-            text = "Cool "
-            page.send(sender_id,text)
             user_name = text_message.split()[-1]
             subscribe.addUser(sender_id,user_name)
+            text = "You've been synced"
+            page.send(sender_id,text)
             print("User Added")
         else:
             print("here")
@@ -209,13 +211,9 @@ def generate_summaries(name,sentences):
         publish_date = article[2]
         top_image_url  = article[3]
         summary_list = []
+        concate_news = headline
         if len(article)==5:
-            summary_list = article[4]
-        concate_news = ""
-
-        for bullets in summary_list:
-            concate_news +=  bullets
-            concate_news += "\n"
+            concate_news = article[4]
 
         # recheck TODO
         sum_keys = sorted(SUMMARIES.keys())
