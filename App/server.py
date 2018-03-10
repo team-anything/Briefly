@@ -63,8 +63,8 @@ def callback_picked_genre(payload, event):
 def webhook():
     payload = request.get_data(as_text=True)
     print(payload)
-    page.show_persistent_menu([Template.ButtonPostBack('MENU1', 'MENU_PAYLOAD/1'),
-                           Template.ButtonPostBack('MENU2', 'MENU_PAYLOAD/2')])
+    page.show_persistent_menu([Template.ButtonPostBack('SUB_LIST1', 'MENU_PAYLOAD/1'),
+                           Template.ButtonPostBack('SUB_LIST2', 'MENU_PAYLOAD/2')])
     page.handle_webhook(payload,message = message_handler)
 
     return "ok"
@@ -79,7 +79,7 @@ def message_handler(event):
     buttons = [
         Template.ButtonWeb("Open Web URL", "https://www.codeforces.com"),
         Template.ButtonPostBack("Subscribe", "www.nytimes.com"),
-        Template.ButtonPhoneNumber("Call Phone Number", "+919820501130")
+        Template.ButtonPhoneNumber("Call Phone Number", "+91")
     ]
 
     user_profile = page.get_user_profile(sender_id)
@@ -156,17 +156,17 @@ def bot(text_message,sender_id):
             url = text_message.split()[-1]
             if 'http' not in url:
                 url='https://'+url
-            p,q,r,s=subscribe.summary(url)
-            sumar=""
-            for i in s:
-                sumar+=i
-            text=p+" \n "+sumar
+            title,publish_date,image,headline = subscribe.summary(url)
+            sumar = ""
+            for h in headline:
+                sumar += h
+            text = title+" \n "+sumar
             page.send(sender_id,text)
         elif Query == "id":
-            text = "Cool "
-            page.send(sender_id,text)
             user_name = text_message.split()[-1]
             subscribe.addUser(sender_id,user_name)
+            text = "You've been synced"
+            page.send(sender_id,text)
             print("User Added")
         else:
             print("here")
