@@ -4,7 +4,7 @@ parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.sys.path.insert(0,parentdir)
 
 from fbmq import Page
-from example.config import CONFIG
+from config import CONFIG
 
 page = Page(CONFIG['FACEBOOK_TOKEN'])
 

@@ -4,9 +4,9 @@ parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.sys.path.insert(0,parentdir)
 
 import json
-from example.config import CONFIG
+from config import CONFIG
 from fbmq import Attachment, Template, QuickReply, NotificationType
-from example.fbpage import page
+from fbpage import page
 
 USER_SEQ = {}
 
@@ -97,7 +97,7 @@ def received_postback(event):
     print("Received postback for user %s and page %s with payload '%s' at %s"
           % (sender_id, recipient_id, payload, time_of_postback))
 
-    page.send(sender_id, "Postback called")
+    #page.send(sender_id, "Postback called")
 
 
 @page.handle_read
