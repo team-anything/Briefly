@@ -18,3 +18,4 @@ Pyrebase==3.0.27
 requests==2.11.1
 six==1.11.0
 tldextract==2.2.0
+langdetect

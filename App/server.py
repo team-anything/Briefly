@@ -24,10 +24,11 @@ import apiai
 import json
 app = Flask(__name__)
 
+
 max_sentences = 3
 max_local_summaries = 20
 SUMMARIES = dict()
-previous = None
+previous = "nytimes"
 
 @app.route('/webhook', methods=['GET'])
 def validate():
@@ -172,12 +173,18 @@ def bot(text_message,sender_id):
             text="loading the latest news from "+shorten_name
             page.send(sender_id,text)
             # page.send(sender_id,"Entity : %s \nValue : %s \nConfidence : %s "%(entin[0],result[entin[0]][0]['value'],result[entin[0]][0]['confidence']*100))
-            results = generate_summaries(shorten_name,max_sentences)
+            visit = 1
+            results = generate_summaries(shorten_name,max_sentences,visit)
             if results == False:
                 return False
             # gen articles send 1st
             page.send(sender_id,Template.Generic(results))
             previous = shorten_name
+            load_more = [
+                        QuickReply(title="Load More", payload="LOAD_MORE"+str(visit))
+                        ]
+            page.send(sender_id,"Do you want to load more ?",quick_replies=load_more,metadata="DEVELOPER_DEFINED_METADATA")
+
             # page.send(sender_id, Template.Buttons(results[1][:200],results[2]))
         return True
     else:
@@ -190,10 +197,24 @@ def bot(text_message,sender_id):
                 { "title": "View Less", "type": "postback", "payload": "payload"}]))
         '''
 
-def generate_summaries(name,sentences):
+@page.callback(['LOAD_MORE(.+)'])
+def callback_picked_genre(payload, event):
+    sender_id = event.sender_id
+    print("picked load more")
+    text="loading the latest news from "+ previous
+    page.send(sender_id,text)
+    visit = int(payload[9:])+1
+    results = generate_summaries(previous,max_sentences,visit)
+    if results == False:
+        return False
+    # gen articles send 1st
+    page.send(sender_id,Template.Generic(results))
+    
+
+def generate_summaries(name,sentences,visit):
     # NOTE : we don't need to store summary , instead storing the links would be enough .
 
-    articles = subscribe.subscribe_model(name)      # link , headline , date==None , image_url , sentences(list)
+    articles = subscribe.subscribe_model(name,visit)      # link , headline , date==None , image_url , sentences(list)
     if articles == None :
         return False
     results = []
@@ -235,7 +256,7 @@ def generate_summaries(name,sentences):
                             # Template.ButtonPhoneNumber("Call Phone Number", "+16505551234")
                         ])
                 )
-        SUMMARIES[hash_index+1] = [headline,concate_news]
+        SUMMARIES[hash_index+1] = [top_image_url,concate_news]
     print("reached Line:227")
     return results
 
@@ -246,8 +267,11 @@ def callback_clicked_button(payload,event):
     news_id = int(payload[25:])      # bug
     print(dummy)
     print(news_id)
+    image_url = SUMMARIES[news_id][0]
+    summ_ary = SUMMARIES[news_id][1]
     # do something with these text   -> To add Headline
-    page.send(sender_id,"*"+SUMMARIES[news_id][0]+"*"+"\n"+SUMMARIES[news_id][1])
+    page.send(sender_id,Attachment.Image(image_url))
+    page.send(sender_id,summ_ary)
 
 
 if __name__ == '__main__':
