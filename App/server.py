@@ -55,7 +55,7 @@ def start_callback(payload, event):
 def callback_picked_genre(payload, event):
     sender_id = event.sender_id
     if payload == "PICK_SYNC":
-        page.send(sender_id,"Please Share your Briefly username \n ( format id: username ) ")      # TODO
+        page.send(sender_id,"Please Share your *Briefly* username \n ( format id: username ) ")      # TODO
     else:
         page.send(sender_id,"Go ahead ;) Play Around for some time ")
 
@@ -233,7 +233,7 @@ def generate_summaries(name,sentences):
                             # Template.ButtonPhoneNumber("Call Phone Number", "+16505551234")
                         ])
                 )
-        SUMMARIES[hash_index+1] = concate_news
+        SUMMARIES[hash_index+1] = [headline,concate_news]
     print("reached Line:227")
     return results
 
@@ -244,9 +244,8 @@ def callback_clicked_button(payload,event):
     news_id = int(payload[25:])      # bug
     print(dummy)
     print(news_id)
-    print(SUMMARIES)
     # do something with these text   -> To add Headline
-    page.send(sender_id,SUMMARIES[news_id])
+    page.send(sender_id,"*"+SUMMARIES[news_id][0]+"*"+"\n"+SUMMARIES[news_id][1])
 
 
 if __name__ == '__main__':
