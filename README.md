@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
-  <img width="200" src="./assets/Briefly.png" alt="Briefly-logo"></a>
+  <img width="250" src="./assets/Briefly.png" alt="Briefly-logo"></a>
 </p>
 <h3 align="center">source based news network</h3>
 

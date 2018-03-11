@@ -1,0 +1,3 @@
+[submodule "briefly-web"]
+	path = briefly-web
+	url = https://github.com/inishchith/Briefly-web.git
