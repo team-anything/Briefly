@@ -14,7 +14,11 @@
 
 ------------------------------------------
 
->We've built a `Source based news network` where the user has the control over the feed .There are no personalized summarized new resources available in the current scenario. Hence we provide a personalized summarized news resource where the user can add his favourite news resources and get the desired summarized feed.
+>There are no personalized , summary based  news resources available in the current scenario . We've built a `Source based news network` where the user has the control over the feed .
+
+<div align="center">
+&#10077; It's the user who decides what he needs &#10078;  -  shivam pawase
+</div>
 
 ------------------------------------------
 ### Features
@@ -46,6 +50,6 @@
 > Extended capabilities of scraper to Indian Languages ( Hindi & Marathi supported as of now)
 
 ------------------------------------------
-### Credits
+### Thanks
 
 > Credits here
