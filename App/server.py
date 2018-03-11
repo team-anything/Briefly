@@ -27,6 +27,7 @@ app = Flask(__name__)
 max_sentences = 3
 max_local_summaries = 20
 SUMMARIES = dict()
+previous = None
 
 @app.route('/webhook', methods=['GET'])
 def validate():
@@ -168,7 +169,7 @@ def bot(text_message,sender_id):
             print("User Added")
         else:
             print("here")
-            text="loading the latest news from "+shorten_name 
+            text="loading the latest news from "+shorten_name
             page.send(sender_id,text)
             # page.send(sender_id,"Entity : %s \nValue : %s \nConfidence : %s "%(entin[0],result[entin[0]][0]['value'],result[entin[0]][0]['confidence']*100))
             results = generate_summaries(shorten_name,max_sentences)
@@ -176,6 +177,7 @@ def bot(text_message,sender_id):
                 return False
             # gen articles send 1st
             page.send(sender_id,Template.Generic(results))
+            previous = shorten_name
             # page.send(sender_id, Template.Buttons(results[1][:200],results[2]))
         return True
     else:
