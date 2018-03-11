@@ -14,7 +14,7 @@
 
 ------------------------------------------
 
->We've built a `Source based news network` where the user has the control over the feed
+>We've built a `Source based news network` where the user has the control over the feed .There are no personalized summarized new resources available in the current scenario. Hence we provide a personalized summarized news resource where the user can add his favourite news resources and get the desired summarized feed.
 
 ------------------------------------------
 ### Features
