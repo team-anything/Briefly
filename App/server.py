@@ -28,7 +28,6 @@ app = Flask(__name__)
 max_sentences = 3
 max_local_summaries = 20
 SUMMARIES = dict()
-previous = "nytimes"
 
 @app.route('/webhook', methods=['GET'])
 def validate():
@@ -173,17 +172,11 @@ def bot(text_message,sender_id):
             text="loading the latest news from "+shorten_name
             page.send(sender_id,text)
             # page.send(sender_id,"Entity : %s \nValue : %s \nConfidence : %s "%(entin[0],result[entin[0]][0]['value'],result[entin[0]][0]['confidence']*100))
-            visit = 1
-            results = generate_summaries(shorten_name,max_sentences,visit)
+            results = generate_summaries(shorten_name,max_sentences)
             if results == False:
                 return False
             # gen articles send 1st
             page.send(sender_id,Template.Generic(results))
-            previous = shorten_name
-            load_more = [
-                        QuickReply(title="Load More", payload="LOAD_MORE"+str(visit))
-                        ]
-            page.send(sender_id,"Do you want to load more ?",quick_replies=load_more,metadata="DEVELOPER_DEFINED_METADATA")
 
             # page.send(sender_id, Template.Buttons(results[1][:200],results[2]))
         return True
@@ -197,24 +190,11 @@ def bot(text_message,sender_id):
                 { "title": "View Less", "type": "postback", "payload": "payload"}]))
         '''
 
-@page.callback(['LOAD_MORE(.+)'])
-def callback_picked_genre(payload, event):
-    sender_id = event.sender_id
-    print("picked load more")
-    text="loading the latest news from "+ previous
-    page.send(sender_id,text)
-    visit = int(payload[9:])+1
-    results = generate_summaries(previous,max_sentences,visit)
-    if results == False:
-        return False
-    # gen articles send 1st
-    page.send(sender_id,Template.Generic(results))
-    
 
-def generate_summaries(name,sentences,visit):
+def generate_summaries(name,sentences):
     # NOTE : we don't need to store summary , instead storing the links would be enough .
 
-    articles = subscribe.subscribe_model(name,visit)      # link , headline , date==None , image_url , sentences(list)
+    articles = subscribe.subscribe_model(name)      # link , headline , date==None , image_url , sentences(list)
     if articles == None :
         return False
     results = []
