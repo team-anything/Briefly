@@ -17,7 +17,7 @@
 >There are no personalized , summary based  news resources available in the current scenario . We've built a `Source based news network` where the user has the control over the feed .
 
 <div align="center">
-&#10077; It's the user who decides what he needs &#10078;  -  shivam pawase
+&#10077; It's the user who decides what he needs &#10078;  -  cheetAh
 </div>
 
 ------------------------------------------
