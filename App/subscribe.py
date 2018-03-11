@@ -15,14 +15,14 @@ stopwords = set()
 
 #firebase initialization
 config={
-        "apiKey": "AIzaSyCPWujYQAgvfUPh1zqX7jqV51JX0Dj0dnU",
+        "apiKey": "",
         "authDomain": "briefly-c7ef1.firebaseapp.com",
         "databaseURL": "https://briefly-c7ef1.firebaseio.com",
         "storageBucket": "briefly-c7ef1.appspot.com"
 }
 
-email="chiragshetty98@gmail.com"
-password="casiitb2016"
+email=""
+password=""
 
 firebase = pyrebase.initialize_app(config)
 auth=firebase.auth()
@@ -296,7 +296,7 @@ def addSource(url):
     db.child('Ulist').set(lis,user['idToken'])
 
 # source , last_updated . hourly limit ( day leaks inactive)
-def subscribe_model(source,offset):
+def subscribe_model(source):
     file_name = "sources.csv"
     sources = pd.read_csv(file_name)
     names = list(sources["name"])
@@ -323,10 +323,8 @@ def subscribe_model(source,offset):
                 subscribe_model(source)
 
     n_articles = len(articles_per_source[source])
-    
-    splits_s = max(0,-offset*min(n_articles,5))
-    splits_e = splits_s+5
-    hashes = articles_per_source[source][splits_s:splits_e]
+
+    hashes = articles_per_source[source][-min(n_articles,5):]
     results = []
     for hash in hashes:
         if hash in Uarticle.keys():

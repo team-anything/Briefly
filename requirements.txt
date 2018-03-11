@@ -6,13 +6,10 @@ Flask==0.11
 googletrans==2.2.0
 goose3==3.0.9
 gunicorn==19.6.0
-idna==2.6
 itsdangerous==0.24
 Jinja2==2.8
-MarkupSafe==0.23
 newspaper3k==0.2.6
 nltk==3.2.5
-numpy==1.14.1
 pandas==0.22.0
 Pyrebase==3.0.27
 requests==2.11.1
