@@ -37,12 +37,18 @@
 <div align="center">
 
 <h3 > Briefly Web-App  </h3>
-<img src ="http://g.recordit.co/xTF7BvyDK5.gif" width = 500px>
+<p align="center">
+<img src ="https://imgur.com/dNBiOpx.png" width = 500px>
+</p>
+
+[see more](http://g.recordit.co/xTF7BvyDK5.gif)
+
 
 <h3 > Briefly On Messenger  </h3>
+<p align="center">
 <img src="./assets/chat1.jpg" width=240px>
 <img src="./assets/chat2.jpg" width=240px>
-
+</p>
 </div>
 
 ------------------------------------------
