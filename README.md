@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
-  <img width=350px height=150px src="./assets/Briefly.png" alt="Briefly-logo"></a>
+ <img width=300px src="./assets/Briefly.png" alt="Briefly-logo"></a>
 </p>
 
 <h3 align="center">Source based news network</h3>
@@ -19,28 +19,33 @@
 
 
 <div align="center">
-&#10077; It's the user who decides what he needs &#10078;  -  cheetAh
+&#10077; It's the user who decides what he needs &#10078;  -  [cheetAh](https://github.com/shivam1708)
 </div>
 
 
 ------------------------------------------
 ### Features
 
-- Subscriptions for a news source
-- Bookmark an article
-- Summarize an source article or a url
-- Browse across ~ 255 preffered source listed [here]()
+- `Subscriptions` for a news source
+- `Bookmark` an article
+- `Summarize` an source article or a url
+- Browse across ~ 255 preffered source listed [here](./App/sources.csv)
 - Featured Article as per all user reaction ( Also an Add-Ons )
-- Night-Mode for better readiblity
+- `Night-Mode` for better readiblity
+- Subscribe to your favorite source using `chatbot` and read it on your own comfort from the `web-app`
 
 <div align="center">
 
-<h3 > Briefly Web-App  </h3>
-<img src ="http://g.recordit.co/xTF7BvyDK5.gif" width = 500px>
+<h3 > Briefly As Web-App  </h3>
+<br>
+<p align="center">
+<img src ="./assets/briefly-web.gif" width = 500px>
+</p>
 
-<h3 > Briefly On Messenger  </h3>
-<img src="./assets/chat1.jpg" width=240px>
-<img src="./assets/chat2.jpg" width=240px>
+<h3><a href="https://www.facebook.com/Briefly-350014818823728/">  Briefly On Messenger   </a></h3>
+<br>
+<img src="./assets/sync-sub.gif" width=245px>
+<img src="./assets/show-news.gif" width=245px>
 
 </div>
 
@@ -50,32 +55,38 @@
 
 - [ ] Offline news feed for subscriptions
 - [ ] Daily Mail ( yet to be integrated with template )
-- [ ] Add
+- [ ] Add More
 
 ### File Structure
 
 
 #### ChatBot
 
-- App : Source code for chatbot
-- Scrappers : Scrapper for maintaining inital news distribution across web-app and chatbot using firebase
+- `App` : Source code for chatbot
+- `Scrappers` : Scrapper for maintaining inital news distribution across web-app and chatbot using firebase . Deployment of this would result in frequent update the news
 
 #### Web-App
 
 - Repository [here](https://github.com/inishchith/Briefly-web/tree/master)
 
+### Installation
+
+```sh
+        $ pip3 install -r requirements.txt
+```
+
 ------------------------------------------
 ### Contributing
 
- We're are open to enhancements & bug-fix . also do have a look [here](./CONTRIBUTING.md)
+ We're are open to `enhancements` & `bug-fixes` :smile: Also do have a look [here](./CONTRIBUTING.md) 
 
 ------------------------------------------
 ### Note
 
-- This project was done under 24 hours with minimal pre-preparation
-- Extended capabilities of scraper to Indian Languages ( Hindi & Marathi supported as of now)
+- This project was done under `24 hours with minimal pre-preparation`
+- Extended capabilities of scraper to `Indian Languages` ( Hindi & Marathi supported as of now)
 
 ------------------------------------------
 ### Recognition
 
-This repository / project was a part of [Mumbai Hackathon 2018](https://mumbaihackathon.in/)
+This repository / project was a part of [@mumbaihackathon](https://github.com/MumbaiHackathon/) 2018

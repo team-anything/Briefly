@@ -3,6 +3,7 @@ import newspaper
 import pickle
 import pyrebase
 from collections import Counter
+
 import os, datetime
 import random
 import hashlib
@@ -19,15 +20,15 @@ stopwords = set()
 INDIAN_LANGUAGES = ['hi','guj','ma']
 
 config={
-        "apiKey": "AIzaSyCPWujYQAgvfUPh1zqX7jqV51JX0Dj0dnU",
-        "authDomain": "briefly-c7ef1.firebaseapp.com",
-        "databaseURL": "https://briefly-c7ef1.firebaseio.com",
-        "storageBucket": "briefly-c7ef1.appspot.com"
+        "apiKey": "",
+        "authDomain": "",
+        "databaseURL": "",
+        "storageBucket": ""
 }
 
 
-email="chiragshetty98@gmail.com"
-password="casiitb2016"
+email=""
+password=""
 
 firebase = pyrebase.initialize_app(config)
 auth=firebase.auth()
