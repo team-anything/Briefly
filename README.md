@@ -19,7 +19,7 @@
 
 
 <div align="center">
-&#10077; It's the user who decides what he needs &#10078;  -  [cheetAh](https://github.com/shivam1708)
+&#10077; It's the user who decides what he needs &#10078;  -  <a href ="https://github.com/shivam1708"> cheetAh </a>
 </div>
 
 
@@ -57,6 +57,7 @@
 - [ ] Daily Mail ( yet to be integrated with template )
 - [ ] Add More
 
+------------------------------------------
 ### File Structure
 
 
@@ -69,16 +70,22 @@
 
 - Repository [here](https://github.com/inishchith/Briefly-web/tree/master)
 
+------------------------------------------
 ### Installation
 
+* Install dependencies
 ```sh
         $ pip3 install -r requirements.txt
 ```
 
+* Edit [config.py](https://github.com/inishchith/Briefly/blob/master/App/config.py)
+
+* Add :fire:firebase project credentials here [1](https://github.com/inishchith/Briefly/blob/master/App/subscribe.py) [2](https://github.com/inishchith/Briefly-web/blob/master/mhack/basic_app/subscribe.py)
+
 ------------------------------------------
 ### Contributing
 
- We're are open to `enhancements` & `bug-fixes` :smile: Also do have a look [here](./CONTRIBUTING.md) 
+ We're are open to `enhancements` & `bug-fixes` :smile: Also do have a look [here](./CONTRIBUTING.md)
 
 ------------------------------------------
 ### Note
@@ -90,3 +97,10 @@
 ### Recognition
 
 This repository / project was a part of [@mumbaihackathon](https://github.com/MumbaiHackathon/) 2018
+
+### Contributors
+
+- [@shivam1708](https://github.com/nurdtechie98)
+- [@nurdtechie98](https://github.com/shivam1708)
+- [@freelancer-98](https://github.com/Freelancer-98)
+- [@inishchith](https://github.com/inishchith)
