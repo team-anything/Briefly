@@ -1,3 +1,8 @@
+`this is just a test branch`
+
+<b> Main branch </b> [here](https://github.com/inishchith/Briefly/tree/master)
+
+
 <p align="center">
   <a href="" rel="noopener">
  <img width=300px src="./assets/Briefly.png" alt="Briefly-logo"></a>
