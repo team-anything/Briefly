@@ -87,20 +87,24 @@
 
  We're are open to `enhancements` & `bug-fixes` :smile: Also do have a look [here](./CONTRIBUTING.md)
 
-------------------------------------------
 ### Note
 
 - This project was done under `24 hours with minimal pre-preparation`
 - Extended capabilities of scraper to `Indian Languages` ( Hindi & Marathi supported as of now)
 
 ------------------------------------------
-### Recognition
-
-This repository / project was a part of [@mumbaihackathon](https://github.com/MumbaiHackathon/) 2018
-
 ### Contributors
 
 - [@shivam1708](https://github.com/nurdtechie98)
 - [@nurdtechie98](https://github.com/shivam1708)
 - [@freelancer-98](https://github.com/Freelancer-98)
 - [@inishchith](https://github.com/inishchith)
+
+------------------------------------------
+### Recognition
+
+This repository / project was a part of [@MumbaiHackathon](https://github.com/MumbaiHackathon/) 2018
+
+<div align="center">
+<img src="./assets/winners.png" width=500px height=350px alt="winners 2018">
+</div>
