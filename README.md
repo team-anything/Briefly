@@ -10,6 +10,9 @@
 [![Gitter](https://img.shields.io/gitter/room/bri3fly/bri3fly.svg)](https://gitter.im/bri3fly/Lobby)
 [![Website cv.lbesson.qc.to](https://img.shields.io/website-up-down-green-red/http/cv.lbesson.qc.to.svg)](https://github.com/inishchith/Briefly-web/tree/master)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+<br>
+[![HitCount](http://hits.dwyl.io/inishchith/Briefly.svg)](http://hits.dwyl.io/inishchith/Briefly)
+
 
 </div>
 
