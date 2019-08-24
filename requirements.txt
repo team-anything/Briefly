@@ -9,7 +9,7 @@ gunicorn==19.6.0
 itsdangerous==0.24
 Jinja2==2.8
 newspaper3k==0.2.6
-nltk==3.2.5
+nltk==3.4.5
 pandas==0.22.0
 Pyrebase==3.0.27
 requests==2.11.1
