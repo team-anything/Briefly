@@ -7,7 +7,7 @@ googletrans==2.2.0
 goose3==3.0.9
 gunicorn==19.6.0
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.11.3
 newspaper3k==0.2.6
 nltk==3.4.5
 pandas==0.22.0
